@@ -72,10 +72,11 @@ class Ventana:
 
 
         def GuaradrPosicion(Fila, Columna,Letra):
+            aux=[]
             global contador
             if Barcos_o_Misiles == True:
-                aux=MatrizBarcos[Fila]
                 if contador < 10:
+                    aux=MatrizBarcos[Fila]
                     if aux[Columna] == 0:
                         aux[Columna]=1
                         MatrizBarcos[Fila] = aux
@@ -89,8 +90,8 @@ class Ventana:
                 else:
                     self.aviso.configure(text="El numero maximo de Barcos es 10") 
             else:
-                aux=MatrizMisiles[Fila]
-                if contador <=10:
+                if contador < 10:
+                    aux=MatrizMisiles[Fila]
                     if aux[Columna] == 0:
                         aux[Columna]=1
                         MatrizMisiles[Fila] = aux
@@ -240,11 +241,15 @@ class Ventana:
 
         def listo():
             global contador
+            global Barcos_o_Misiles
             if contador == 10:
                 self.etiqueta.configure(text="Coloque las posiciones de los 10 misiles") 
                 self.aviso.configure(text="")
                 Barcos_o_Misiles=False 
                 contador=0
+                print(MatrizBarcos)
+                print('-------------------------------')
+                print(MatrizMisiles)
             else:
                 self.aviso.configure(text="Debe llenar las 10 Posicionesn antes de avanzar") 
 
