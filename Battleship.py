@@ -1,8 +1,21 @@
+from __future__ import barry_as_FLUFL
+from ast import MatchAs
 from msilib.schema import File
+from pydoc import plain
 from sqlite3 import Row
-from tkinter import LEFT, Tk, Label, Button, ttk
+from tkinter import LEFT, Place, Tk, Label, Button, ttk
 import tkinter
 
+
+Barcos_o_Misiles = True
+#Variable que determina si se estan ponniendo los barcos o los misiles
+#Si es True se ponen los barcos, si es False entonces se ponen los misiles 
+
+MatrizBarcos= [[0,0,0,0,0,0,0,0,0,0],
+               [0,0,0,0,0,0,0,0,0,0],
+               [0,0,0,0,0,0,0,0,0,0],
+               [0,0,0,0,0,0,0,0,0,0]]
+aux=[]
 
     
 
@@ -19,7 +32,7 @@ class Ventana:
 
         #Fila A
 
-        self.A0 = ttk.Button(master, text="A0")
+        self.A0 = ttk.Button(master, text="A0",command=GuaradrPosicion(0,0))
         self.A0.place(width=60,height=25,x=30,y=350)
         
         self.A1 = ttk.Button(master, text="A1")
@@ -146,10 +159,26 @@ class Ventana:
         self.D9.place(width=60,height=25, x=615,y=440)
 
         self.Listo = ttk.Button(master,text='Listo')
+        self.Listo.place(width=60,height=25, x=630,y=650)
         
 
-    def saludar(self):
-        print("¡Hey!")
+#Funciones
+
+def GuaradrPosicion(Fila, Columna):
+
+
+    if Barcos_o_Misiles == True:
+        aux=MatrizBarcos[Fila]
+        aux[Columna]=1
+        MatrizBarcos[Fila]= aux
+
+
 root = Tk()
 miVentana = Ventana(root)
 root.mainloop()
+
+
+
+
+
+
