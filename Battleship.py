@@ -35,7 +35,7 @@ def GuaradrPosicion(Fila, Columna,Letra):
     global contador
     aux=MatrizBarcos[Fila]
     if Barcos_o_Misiles == True:
-        if contador <=10:
+        if contador < 10:
             if aux[Columna] == 0:
                 aux[Columna]=1
                 MatrizBarcos[Fila] = aux
@@ -113,102 +113,104 @@ class Ventana:
 
          #Fila B
 
-        self.B0 =ttk.Button(master, text="B0",command=lambda: GuaradrPosicion(0,0,'B'))
+        self.B0 =ttk.Button(master, text="B0",command=lambda: GuaradrPosicion(1,0,'B'))
         self.B0.place(width=60,height=25,x=30,y=380)
 
-        self.B1 = ttk.Button(master, text="B1",command=lambda: GuaradrPosicion(0,1,'B'))
+        self.B1 = ttk.Button(master, text="B1",command=lambda: GuaradrPosicion(1,1,'B'))
         self.B1.place(width=60,height=25, x=95,y=380)
 
-        self.B2 = ttk.Button(master, text="B2",command=lambda: GuaradrPosicion(0,2,'B'))
+        self.B2 = ttk.Button(master, text="B2",command=lambda: GuaradrPosicion(1,2,'B'))
         self.B2.place(width=60,height=25, x=160,y=380)
         
-        self.B3 = ttk.Button(master, text="B3",command=lambda: GuaradrPosicion(0,3,'B'))
+        self.B3 = ttk.Button(master, text="B3",command=lambda: GuaradrPosicion(1,3,'B'))
         self.B3.place(width=60,height=25, x=225,y=380)
 
-        self.B4 = ttk.Button(master, text="B4",command=lambda: GuaradrPosicion(0,4,'B'))
+        self.B4 = ttk.Button(master, text="B4",command=lambda: GuaradrPosicion(1,4,'B'))
         self.B4.place(width=60,height=25, x=290,y=380)
 
-        self.B5 = ttk.Button(master, text="B5",command=lambda: GuaradrPosicion(0,5,'B'))
+        self.B5 = ttk.Button(master, text="B5",command=lambda: GuaradrPosicion(1,5,'B'))
         self.B5.place(width=60,height=25, x=355,y=380)
 
-        self.B6 = ttk.Button(master, text="B6",command=lambda: GuaradrPosicion(0,6,'B'))
+        self.B6 = ttk.Button(master, text="B6",command=lambda: GuaradrPosicion(1,6,'B'))
         self.B6.place(width=60,height=25, x=420,y=380)
 
-        self.B7 = ttk.Button(master, text="B7",command=lambda: GuaradrPosicion(0,7,'B'))
+        self.B7 = ttk.Button(master, text="B7",command=lambda: GuaradrPosicion(1,7,'B'))
         self.B7.place(width=60,height=25, x=485,y=380)
 
-        self.B8 = ttk.Button(master, text="B8",command=lambda: GuaradrPosicion(0,8,'B'))
+        self.B8 = ttk.Button(master, text="B8",command=lambda: GuaradrPosicion(1,8,'B'))
         self.B8.place(width=60,height=25, x=550,y=380)
 
-        self.B9 = ttk.Button(master, text="B9",command=lambda: GuaradrPosicion(0,9,'B'))
+        self.B9 = ttk.Button(master, text="B9",command=lambda: GuaradrPosicion(1,9,'B'))
         self.B9.place(width=60,height=25, x=615,y=380)
 
          #Fila C
 
-        self.C0 =ttk.Button(master, text="C0",command=lambda: GuaradrPosicion(0,0,'C'))
+        self.C0 =ttk.Button(master, text="C0",command=lambda: GuaradrPosicion(2,0,'C'))
         self.C0.place(width=60,height=25,x=30,y=410)
 
-        self.C1 = ttk.Button(master, text="C1",command=lambda: GuaradrPosicion(0,1,'C'))
+        self.C1 = ttk.Button(master, text="C1",command=lambda: GuaradrPosicion(2,1,'C'))
         self.C1.place(width=60,height=25, x=95,y=410)
 
-        self.C2 = ttk.Button(master, text="C2",command=lambda: GuaradrPosicion(0,2,'C'))
+        self.C2 = ttk.Button(master, text="C2",command=lambda: GuaradrPosicion(2,2,'C'))
         self.C2.place(width=60,height=25, x=160,y=410)
         
-        self.C3 = ttk.Button(master, text="C3",command=lambda: GuaradrPosicion(0,3,'C'))
+        self.C3 = ttk.Button(master, text="C3",command=lambda: GuaradrPosicion(2,3,'C'))
         self.C3.place(width=60,height=25, x=225,y=410)
 
-        self.C4 = ttk.Button(master, text="C4",command=lambda: GuaradrPosicion(0,4,'C'))
+        self.C4 = ttk.Button(master, text="C4",command=lambda: GuaradrPosicion(2,4,'C'))
         self.C4.place(width=60,height=25, x=290,y=410)
 
-        self.C5 = ttk.Button(master, text="C5",command=lambda: GuaradrPosicion(0,5,'C'))
+        self.C5 = ttk.Button(master, text="C5",command=lambda: GuaradrPosicion(2,5,'C'))
         self.C5.place(width=60,height=25, x=355,y=410)
 
-        self.C6 = ttk.Button(master, text="C6",command=lambda: GuaradrPosicion(0,6,'C'))
+        self.C6 = ttk.Button(master, text="C6",command=lambda: GuaradrPosicion(2,6,'C'))
         self.C6.place(width=60,height=25, x=420,y=410)
 
-        self.C7 = ttk.Button(master, text="C7",command=lambda: GuaradrPosicion(0,7,'C'))
+        self.C7 = ttk.Button(master, text="C7",command=lambda: GuaradrPosicion(2,7,'C'))
         self.C7.place(width=60,height=25, x=485,y=410)
 
-        self.C8 = ttk.Button(master, text="C8",command=lambda: GuaradrPosicion(0,8,'C'))
+        self.C8 = ttk.Button(master, text="C8",command=lambda: GuaradrPosicion(2,8,'C'))
         self.C8.place(width=60,height=25, x=550,y=410)
 
-        self.C9 = ttk.Button(master, text="C9",command=lambda: GuaradrPosicion(0,9,'C'))
+        self.C9 = ttk.Button(master, text="C9",command=lambda: GuaradrPosicion(2,9,'C'))
         self.C9.place(width=60,height=25, x=615,y=410)
 
         #Fila D
 
-        self.D0 =ttk.Button(master, text="D0",command=lambda: GuaradrPosicion(0,0,'D'))
+        self.D0 =ttk.Button(master, text="D0",command=lambda: GuaradrPosicion(3,0,'D'))
         self.D0.place(width=60,height=25,x=30,y=440)
 
-        self.D1 = ttk.Button(master, text="D1",command=lambda: GuaradrPosicion(0,1,'D'))
+        self.D1 = ttk.Button(master, text="D1",command=lambda: GuaradrPosicion(3,1,'D'))
         self.D1.place(width=60,height=25, x=95,y=440)
 
-        self.D2 = ttk.Button(master, text="D2",command=lambda: GuaradrPosicion(0,2,'D'))
+        self.D2 = ttk.Button(master, text="D2",command=lambda: GuaradrPosicion(3,2,'D'))
         self.D2.place(width=60,height=25, x=160,y=440)
         
-        self.D3 = ttk.Button(master, text="D3",command=lambda: GuaradrPosicion(0,3,'D'))
+        self.D3 = ttk.Button(master, text="D3",command=lambda: GuaradrPosicion(3,3,'D'))
         self.D3.place(width=60,height=25, x=225,y=440)
 
-        self.D4 = ttk.Button(master, text="D4",command=lambda: GuaradrPosicion(0,4,'D'))
+        self.D4 = ttk.Button(master, text="D4",command=lambda: GuaradrPosicion(3,4,'D'))
         self.D4.place(width=60,height=25, x=290,y=440)
 
-        self.D5 = ttk.Button(master, text="D5",command=lambda: GuaradrPosicion(0,5,'D'))
+        self.D5 = ttk.Button(master, text="D5",command=lambda: GuaradrPosicion(3,5,'D'))
         self.D5.place(width=60,height=25, x=355,y=440)
 
-        self.D6 = ttk.Button(master, text="D6",command=lambda: GuaradrPosicion(0,6,'D'))
+        self.D6 = ttk.Button(master, text="D6",command=lambda: GuaradrPosicion(3,6,'D'))
         self.D6.place(width=60,height=25, x=420,y=440)
 
-        self.D7 = ttk.Button(master, text="D7",command=lambda: GuaradrPosicion(0,7,'D'))
+        self.D7 = ttk.Button(master, text="D7",command=lambda: GuaradrPosicion(3,7,'D'))
         self.D7.place(width=60,height=25, x=485,y=440)
 
-        self.D8 = ttk.Button(master, text="D8",command=lambda: GuaradrPosicion(0,8,'D'))
+        self.D8 = ttk.Button(master, text="D8",command=lambda: GuaradrPosicion(3,8,'D'))
         self.D8.place(width=60,height=25, x=550,y=440)
 
-        self.D9 = ttk.Button(master, text="D9",command=lambda: GuaradrPosicion(0,9,'D'))
+        self.D9 = ttk.Button(master, text="D9",command=lambda: GuaradrPosicion(3,9,'D'))
         self.D9.place(width=60,height=25, x=615,y=440)
 
         self.Listo = ttk.Button(master,text='Listo', command= lambda: listo())
         self.Listo.place(width=60,height=25, x=630,y=650)
+
+        self.ImprimirMatrices = ttk.Button(master, text='Datos')
 
 
         def listo():
