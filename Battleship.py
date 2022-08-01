@@ -1,10 +1,9 @@
-#from __future__ import barry_as_FLUFL
 from ast import MatchAs
 from msilib.schema import File
 from pydoc import plain
 from sqlite3 import Row
 from tkinter import LEFT, Place, Tk, Label, Button, ttk
-import tkinter, serial, time
+import tkinter,time  #,serial
 
 
 
@@ -31,35 +30,8 @@ contador=0
 
 #Funciones
 
-def GuaradrPosicion(Fila, Columna,Letra):
-    global contador
-    aux=MatrizBarcos[Fila]
-    if Barcos_o_Misiles == True:
-        if contador < 10:
-            if aux[Columna] == 0:
-                aux[Columna]=1
-                MatrizBarcos[Fila] = aux
-                contador +=1
-                print(contador)
-                print(MatrizBarcos[Fila])
-                enviar_posicion_Arduino(Letra, str(Columna))
-            else:
-                print('No puedes poner 2 Barcos/Misiles en el mismo punto')
-        else:
-            print('El numero maximo de Barcos/Misiles es 10')
-            print(contador)
-    else:
-        if contador <=10:
-            if aux[Columna] == 0:
-                aux[Columna]=1
-                MatrizMisiles[Fila] = aux
-                contador +=1
-                print(contador)
-                print(MatrizMisiles[Fila])
-                enviar_posicion_Arduino(Letra, str(Columna))
-            else:
-                print('No puedes poner 2 Barcos/Misiles en el mismo punto')
 
+'''
 #FUNCIONA EN EL ARDUINO AMICO
 def enviar_posicion_Arduino(fila, columna):
 
@@ -76,7 +48,7 @@ def enviar_posicion_Arduino(fila, columna):
     if (i == 2):
         sentChar = bytes(columna, 'utf-8')
         arduinoData.write(sentChar)             #
-
+'''
 
 def imprimision():
     print(MatrizBarcos[0])
@@ -94,6 +66,42 @@ class Ventana:
         self.lbl_banner.pack()
         self.etiqueta = Label(master, text="Escoja la posicion de sus 10 barcos")
         self.etiqueta.pack()
+        self.aviso = Label(master)
+        self.aviso.place(x=210,y=680)
+
+
+
+        def GuaradrPosicion(Fila, Columna,Letra):
+            global contador
+            if Barcos_o_Misiles == True:
+                aux=MatrizBarcos[Fila]
+                if contador < 10:
+                    if aux[Columna] == 0:
+                        aux[Columna]=1
+                        MatrizBarcos[Fila] = aux
+                        contador +=1
+                        self.aviso.configure(text="Posicion Guardada") 
+                        print(contador)
+                        print(MatrizBarcos[Fila])
+                        #enviar_posicion_Arduino(Letra, str(Columna))
+                    else:
+                        self.aviso.configure(text="No puedes poner 2 Barcos en el mismo punto") 
+                else:
+                    self.aviso.configure(text="El numero maximo de Barcos es 10") 
+            else:
+                aux=MatrizMisiles[Fila]
+                if contador <=10:
+                    if aux[Columna] == 0:
+                        aux[Columna]=1
+                        MatrizMisiles[Fila] = aux
+                        contador +=1
+                        print(contador)
+                        print(MatrizMisiles[Fila])
+                        #enviar_posicion_Arduino(Letra, str(Columna))
+                    else:
+                        self.aviso.configure(text="No puedes poner 2 Misiles en el mismo punto") 
+                else:
+                    self.aviso.configure(text="El numero maximo de Misiles es 10") 
 
 
         #Fila A
@@ -232,9 +240,13 @@ class Ventana:
 
         def listo():
             global contador
-            self.etiqueta.configure(text="Coloque las posiciones de los 10 misiles") 
-            contador=0
-            print('arepa')
+            if contador == 10:
+                self.etiqueta.configure(text="Coloque las posiciones de los 10 misiles") 
+                self.aviso.configure(text="")
+                Barcos_o_Misiles=False 
+                contador=0
+            else:
+                self.aviso.configure(text="Debe llenar las 10 Posicionesn antes de avanzar") 
 
 root = Tk()
 miVentana = Ventana(root)
