@@ -4,14 +4,14 @@ from msilib.schema import File
 from pydoc import plain
 from sqlite3 import Row
 from tkinter import LEFT, Place, Tk, Label, Button, ttk
-import tkinter
+import tkinter, serial, time
 
 
 
 
 Barcos_o_Misiles = True
 #Variable que determina si se estan ponniendo los barcos o los misiles
-#Si es True se ponen los barcos, si es False entonces se ponen los misiles 
+#Si es True se ponen los barcos, si es False entonces se ponen los misiles
 
 MatrizBarcos= [[0,0,0,0,0,0,0,0,0,0],
                [0,0,0,0,0,0,0,0,0,0],
@@ -42,12 +42,13 @@ def GuaradrPosicion(Fila, Columna,Letra):
                 contador +=1
                 print(contador)
                 print(MatrizBarcos[Fila])
+                enviar_posicion_Arduino(Letra, str(Columna))
             else:
                 print('No puedes poner 2 Barcos/Misiles en el mismo punto')
         else:
             print('El numero maximo de Barcos/Misiles es 10')
             print(contador)
-    else: 
+    else:
         if contador <=10:
             if aux[Columna] == 0:
                 aux[Columna]=1
@@ -55,10 +56,26 @@ def GuaradrPosicion(Fila, Columna,Letra):
                 contador +=1
                 print(contador)
                 print(MatrizMisiles[Fila])
+                enviar_posicion_Arduino(Letra, str(Columna))
             else:
                 print('No puedes poner 2 Barcos/Misiles en el mismo punto')
 
+#FUNCIONA EN EL ARDUINO AMICO
+def enviar_posicion_Arduino(fila, columna):
 
+    arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
+    time.sleep(2)
+    i = 1
+
+    if(i == 1):
+        sentChar = bytes(fila, 'utf-8')
+        arduinoData.write(sentChar)             #La envia por el puerto serial
+        i = i + 1
+
+
+    if (i == 2):
+        sentChar = bytes(columna, 'utf-8')
+        arduinoData.write(sentChar)             #
 
 
 def imprimision():
@@ -218,7 +235,6 @@ class Ventana:
             self.etiqueta.configure(text="Coloque las posiciones de los 10 misiles") 
             contador=0
             print('arepa')
-        
 
 root = Tk()
 miVentana = Ventana(root)
