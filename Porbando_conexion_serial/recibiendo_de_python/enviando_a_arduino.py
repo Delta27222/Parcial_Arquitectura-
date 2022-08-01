@@ -52,3 +52,84 @@ def run():
 if __name__ == '__main__':
     run()
 
+# JA_Barcos
+# JB_Barcos
+
+# JA_Misiles
+# JB_Misiles
+
+
+
+   lcd.clear();
+  misilesJA();
+  
+  //OBTENIENDO LOS DATOS DEL .PY
+  
+  //El usuario JB posicionando BARCOS
+  mensajeEsperaJB(2);
+  llenandoBarcosJB();  
+  
+  //El usuario JB posicionando MISILES
+  mensajeEsperaJB(3);
+  llenandoMisilesJB();
+  
+  //FUNCION QUE HACE LAS COMPROBACIONES DEL PRIMER ATAQUE
+  
+    comprobarPosicionAtaque(1);//Comprueba que el jugador A le dio a un BARCO DEL JB
+	
+    comprobarPosicionAtaque(2);//Comprueba que el jugador B le dio a un BARCO DEL JA
+  
+  //-------------------------------------------------
+  
+  //PARA PODER EMPEZAR LA GUERRA Se supone que esto va a funcionar 3 veces (cada ataque)
+  int ataque = 1;
+  while(ataque < 3){
+    
+     //Pide en el LCD los misiles al JA
+     lcd.clear();
+ 	 misilesJA();
+    
+    //Esperamos los misiles del JB de .py
+    mensajeEsperaJB(3);
+  	llenandoMisilesJB();
+    
+    //FUNCION QUE HACE LAS COMPROBACIONES DEL PRIMER ATAQUE
+	
+    comprobarPosicionAtaque(1);//Comprueba que el jugador A le dio a un BARCO DEL JB
+	
+    comprobarPosicionAtaque(2);//Comprueba que el jugador B le dio a un BARCO DEL JA
+
+    //Mostramos los resultados del ataque
+    mostrarPuntaje();
+    
+    //Mostramos la matriz de los barcos del JA
+    verMatrizMisilesJA2();
+    
+    //Mensaje em pantalla
+    
+    ataque = ataque + 1;  
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Ronda #");
+    lcd.setCursor(7,0);
+    lcd.print(ataque);
+    if (ataque == 3){
+      lcd.setCursor(1,1);
+      lcd.print("FIN BATALLA!!");
+    }
+  	lcd.clear();
+    delay(1000);
+  }
+  //FUNCION QUE ENVIE LA PUNTUUACION DEL JUGADOR B A PYHTON
+  //OJOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+  //-----------------------
+
+  contadorInicio = 0;
+  puntuacionJB = 0;
+
+
+
+
+
+
+  
