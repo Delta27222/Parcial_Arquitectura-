@@ -1,9 +1,12 @@
 from ast import MatchAs
 from asyncio.proactor_events import BaseProactorEventLoop
 from msilib.schema import File
+from operator import truediv
 from pydoc import plain
+from re import S
 from sqlite3 import Row
-from tkinter import LEFT, Place, Tk, Label, Button, ttk
+import string
+from tkinter import LEFT, Place, Tk, Label, Button, messagebox, ttk
 import tkinter,time  #,serial
 
 
@@ -24,6 +27,12 @@ MatrizMisiles= [[0,0,0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0]]
 
 aux=[]
+
+score = 500
+
+Ganar_o_Perder = False
+#si es True el jugador de pc gano
+#si el false el jugador de pc perdio
 
 contador=0
 #Contador de Barcos posicionados o misiles preparados 
@@ -51,9 +60,11 @@ def enviar_posicion_Arduino(fila, columna):
         arduinoData.write(sentChar)             #
 '''
 
-def imprimision():
-    print(MatrizBarcos[0])
-    print(contador)
+def popUp():
+    if Ganar_o_Perder == True:
+        messagebox.showinfo('Game Over, Gano',message='Felicidades, su puntaje es: '+ str(score))
+    else:
+        messagebox.showinfo('Game Over, Perdio',message='Vuelav a intentarlo, su puntaje es: '+ str(score))
 
 
 
@@ -69,6 +80,10 @@ class Ventana:
         self.etiqueta.pack()
         self.aviso = Label(master)
         self.aviso.place(x=210,y=680)
+        self.puntajeTxt = Label(master,text='Score')
+        self.puntajeTxt.place(x=620,y=150)
+        self.puntaje = Label(master,text=(score))
+        self.puntaje.place(x=620,y=165)
 
 
 
@@ -102,6 +117,9 @@ class Ventana:
                         self.aviso.configure(text="No puedes poner 2 Misiles en el mismo punto") 
                 else:
                     self.aviso.configure(text="El numero maximo de Misiles es 10, presione listo para seguir") 
+
+        def actualizarScore():
+            self.puntaje.config(text=score)
 
 
         #Fila A
@@ -235,7 +253,13 @@ class Ventana:
         self.Listo = ttk.Button(master,text='Listo', command= lambda: listo())
         self.Listo.place(width=60,height=25, x=630,y=650)
 
-        self.ImprimirMatrices = ttk.Button(master, text='Datos')
+        self.test = ttk.Button(master, text='Score',command= lambda: actualizarScore())
+        self.test.place(x=200, y=600,width=60,height=25)
+
+        self.test2 = ttk.Button(master, text='PopUp',command= lambda: popUp())
+        self.test2.place(x=200, y=640,width=60,height=25)
+
+
 
 
         def listo():
@@ -250,6 +274,9 @@ class Ventana:
                 contador=0
             else:
                 self.aviso.configure(text="Debe llenar las 10 Posicionesn antes de avanzar") 
+
+
+
 
         def prenderBotones():
             self.A0.config(state='enable')
