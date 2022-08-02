@@ -1,4 +1,5 @@
 from ast import MatchAs
+from asyncio.proactor_events import BaseProactorEventLoop
 from msilib.schema import File
 from pydoc import plain
 from sqlite3 import Row
@@ -72,7 +73,6 @@ class Ventana:
 
 
         def GuaradrPosicion(Fila, Columna,Letra):
-            aux=[]
             global contador
             if Barcos_o_Misiles == True:
                 if contador < 10:
@@ -82,13 +82,12 @@ class Ventana:
                         MatrizBarcos[Fila] = aux
                         contador +=1
                         self.aviso.configure(text="Posicion Guardada") 
-                        print(contador)
-                        print(MatrizBarcos[Fila])
+                        apagarBoton(Fila,Columna)
                         #enviar_posicion_Arduino(Letra, str(Columna))
                     else:
                         self.aviso.configure(text="No puedes poner 2 Barcos en el mismo punto") 
                 else:
-                    self.aviso.configure(text="El numero maximo de Barcos es 10") 
+                    self.aviso.configure(text="El numero maximo de Barcos es 10, presione listo para seguir") 
             else:
                 if contador < 10:
                     aux=MatrizMisiles[Fila]
@@ -96,13 +95,13 @@ class Ventana:
                         aux[Columna]=1
                         MatrizMisiles[Fila] = aux
                         contador +=1
-                        print(contador)
-                        print(MatrizMisiles[Fila])
+                        self.aviso.configure(text="Posicion Guardada")
+                        apagarBoton(Fila,Columna)
                         #enviar_posicion_Arduino(Letra, str(Columna))
                     else:
                         self.aviso.configure(text="No puedes poner 2 Misiles en el mismo punto") 
                 else:
-                    self.aviso.configure(text="El numero maximo de Misiles es 10") 
+                    self.aviso.configure(text="El numero maximo de Misiles es 10, presione listo para seguir") 
 
 
         #Fila A
@@ -245,13 +244,142 @@ class Ventana:
             if contador == 10:
                 self.etiqueta.configure(text="Coloque las posiciones de los 10 misiles") 
                 self.aviso.configure(text="")
+                if Barcos_o_Misiles == True:
+                    prenderBotones()
                 Barcos_o_Misiles=False 
                 contador=0
-                print(MatrizBarcos)
-                print('-------------------------------')
-                print(MatrizMisiles)
             else:
                 self.aviso.configure(text="Debe llenar las 10 Posicionesn antes de avanzar") 
+
+        def prenderBotones():
+            self.A0.config(state='enable')
+            self.A1.config(state='enable')             
+            self.A2.config(state='enable')
+            self.A3.config(state='enable')
+            self.A4.config(state='enable')
+            self.A5.config(state='enable')
+            self.A6.config(state='enable')
+            self.A7.config(state='enable')
+            self.A8.config(state='enable')
+            self.A9.config(state='enable')
+            self.B0.config(state='enable')
+            self.B1.config(state='enable')
+            self.B2.config(state='enable')
+            self.B3.config(state='enable')
+            self.B4.config(state='enable')
+            self.B5.config(state='enable')
+            self.B6.config(state='enable')
+            self.B7.config(state='enable')
+            self.B8.config(state='enable')
+            self.B9.config(state='enable')
+            self.C0.config(state='enable')
+            self.C1.config(state='enable')
+            self.C2.config(state='enable')
+            self.C3.config(state='enable')
+            self.C4.config(state='enable')
+            self.C5.config(state='enable')
+            self.C6.config(state='enable')
+            self.C7.config(state='enable')
+            self.C8.config(state='enable')
+            self.C9.config(state='enable')
+            self.D0.config(state='enable')
+            self.D1.config(state='enable')
+            self.D2.config(state='enable')
+            self.D3.config(state='enable')
+            self.D4.config(state='enable')
+            self.D5.config(state='enable')
+            self.D6.config(state='enable')
+            self.D7.config(state='enable')
+            self.D8.config(state='enable')
+            self.D9.config(state='enable')
+
+
+
+        def apagarBoton(fila, columna):
+            if fila == 0:
+                if columna == 0:
+                    self.A0.config(state='disable')
+                elif columna == 1:
+                    self.A1.config(state='disable')
+                elif columna == 2:
+                    self.A2.config(state='disable')
+                elif columna == 3:
+                    self.A3.config(state='disable')
+                elif columna == 4:
+                    self.A4.config(state='disable')
+                elif columna == 5:
+                    self.A5.config(state='disable')
+                elif columna == 6:
+                    self.A6.config(state='disable')
+                elif columna == 7:
+                    self.A7.config(state='disable')
+                elif columna == 8:
+                    self.A8.config(state='disable')
+                elif columna == 9:
+                    self.A9.config(state='disable')
+            elif fila == 1:
+                if columna == 0:
+                    self.B0.config(state='disable')
+                elif columna == 1:
+                    self.B1.config(state='disable')
+                elif columna == 2:
+                    self.B2.config(state='disable')
+                elif columna == 3:
+                    self.B3.config(state='disable')
+                elif columna == 4:
+                    self.B4.config(state='disable')
+                elif columna == 5:
+                    self.B5.config(state='disable')
+                elif columna == 6:
+                    self.B6.config(state='disable')
+                elif columna == 7:
+                    self.B7.config(state='disable')
+                elif columna == 8:
+                    self.B8.config(state='disable')
+                elif columna == 9:
+                    self.B9.config(state='disable')
+            elif fila == 2:
+                if columna == 0:
+                    self.C0.config(state='disable')
+                elif columna == 1:
+                    self.C1.config(state='disable')
+                elif columna == 2:
+                    self.C2.config(state='disable')
+                elif columna == 3:
+                    self.C3.config(state='disable')
+                elif columna == 4:
+                    self.C4.config(state='disable')
+                elif columna == 5:
+                    self.C5.config(state='disable')
+                elif columna == 6:
+                    self.C6.config(state='disable')
+                elif columna == 7:
+                    self.C7.config(state='disable')
+                elif columna == 8:
+                    self.C8.config(state='disable')
+                elif columna == 9:
+                    self.C9.config(state='disable')
+            elif fila == 3:
+                if columna == 0:
+                    self.D0.config(state='disable')
+                elif columna == 1:
+                    self.D1.config(state='disable')
+                elif columna == 2:
+                    self.D2.config(state='disable')
+                elif columna == 3:
+                    self.D3.config(state='disable')
+                elif columna == 4:
+                    self.D4.config(state='disable')
+                elif columna == 5:
+                    self.D5.config(state='disable')
+                elif columna == 6:
+                    self.D6.config(state='disable')
+                elif columna == 7:
+                    self.D7.config(state='disable')
+                elif columna == 8:
+                    self.D8.config(state='disable')
+                elif columna == 9:
+                    self.D9.config(state='disable')
 
 root = Tk()
 miVentana = Ventana(root)
