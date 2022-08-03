@@ -7,7 +7,7 @@ from re import S
 from sqlite3 import Row
 import string
 from tkinter import LEFT, Place, Tk, Label, Button, messagebox, ttk
-import tkinter,time  #,serial
+import tkinter,time  ,serial
 from turtle import delay
 
 
@@ -47,7 +47,7 @@ num_Ataque = 0
 #Maximo 10 
 
 #Funciones
-'''
+
 #FUNCIONA EN EL ARDUINO AMICO
 def enviar_posicion_Arduino(fila, columna):
 
@@ -63,8 +63,8 @@ def enviar_posicion_Arduino(fila, columna):
 
     if (i == 2):
         sentChar = bytes(columna, 'utf-8')
-        arduinoData.write(sentChar)             #
-'''
+        arduinoData.write(sentChar)             
+
 
 def popUp():
     if Ganar_o_Perder == True:
@@ -137,7 +137,7 @@ class Ventana:
                         t.start()
 
                         apagarBoton(Fila,Columna)
-                        #enviar_posicion_Arduino(Letra, str(Columna))
+                        enviar_posicion_Arduino(Letra, str(Columna))
                     else:
                         self.aviso.configure(text="Coordenada repetida!")
                         t = threading.Timer(0.7, update_label)   #Ejecuta la funcion de "update_label" despues de 0.7seg
@@ -157,7 +157,7 @@ class Ventana:
                         t = threading.Timer(0.7, update_label)   #Ejecuta la funcion de "update_label" despues de 0.7seg
                         t.start()
                         apagarBoton(Fila,Columna)
-                        #enviar_posicion_Arduino(Letra, str(Columna))
+                        enviar_posicion_Arduino(Letra, str(Columna))
                     else:
                         self.aviso.configure(text="Coordenada repetida!")
                         t = threading.Timer(0.7, update_label)   #Ejecuta la funcion de "update_label" despues de 0.7seg
@@ -168,22 +168,18 @@ class Ventana:
                     t.start()
 
         def actualizarScore():
-          #arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
-          #dataPacket = arduinoData.readline()
-          #dataPacket = str(dataPacket, 'utf-8')
-         # print(dataPacket)
-          #score = int(dataPacket)
+          arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
+          dataPacket = arduinoData.readline()
+          dataPacket = str(dataPacket, 'utf-8')
+          print(dataPacket)
+          score = int(dataPacket)
           self.puntaje.config(text=score)
-
-          #CARLOS COLOCA QUE NO PUEDAS TOCAR ESTE BOTON ANTES DE HACER EL
-          #LA PRIMERA TOMA DE LOS MISILES, QUE SOLO SE ACTIVE CUANDO COLOQUE
-          #LOS MISILES Y PASEN QUE SI 1 SEGUNDO
 
         def update_label():
           self.aviso.configure(text="")
 
-        def actualizarAtque():
-            self.numAtaqueLabel.config(text=str(contadorPeleas))
+        def actualizarAtaque():
+            self.numAtaque.config(text=str(contadorPeleas))
 
         
 
@@ -384,7 +380,6 @@ class Ventana:
 
 
         def listo():
-            global score
             global contador
             global contadorPeleas
             global Barcos_o_Misiles
@@ -396,10 +391,10 @@ class Ventana:
                     prenderBotones()
                     xd()
                 else:
-                    score=score+80
                     t = threading.Timer(1, actualizarScore) 
                     t.start() 
                     contadorPeleas +=1
+                    actualizarAtaque()
                     if contadorPeleas==3:
                         apagarTodosLosBotones()
                         u = threading.Timer(1, actualizarScore) 
