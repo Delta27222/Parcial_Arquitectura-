@@ -7,7 +7,7 @@ from re import S
 from sqlite3 import Row
 import string
 from tkinter import LEFT, Place, Tk, Label, Button, messagebox, ttk
-import tkinter,time  #,serial
+import tkinter,time  ,serial
 
 
 
@@ -41,12 +41,25 @@ contador=0
 #Funciones
 
 
+def recibirPuntuacion():
+  arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
+
+  dataPacket = arduinoData.readline()
+  dataPacket = str(dataPacket, 'utf-8')
+  print(dataPacket)
+
+  puntaje = int(dataPacket)
+
+  actualizarScore(puntaje)
+
+  arduinoData.close()
+
 '''
 #FUNCIONA EN EL ARDUINO AMICO
 def enviar_posicion_Arduino(fila, columna):
 
     arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
-    time.sleep(2)
+    time.sleep(1)
     i = 1
 
     if(i == 1):
@@ -119,7 +132,16 @@ class Ventana:
                     self.aviso.configure(text="El numero maximo de Misiles es 10, presione listo para seguir") 
 
         def actualizarScore():
-            self.puntaje.config(text=score)
+          arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
+          dataPacket = arduinoData.readline()
+          dataPacket = str(dataPacket, 'utf-8')
+          print(dataPacket)
+          puntaje = int(dataPacket)
+          self.puntaje.config(text=puntaje)
+
+          #CARLOS COLOCA QUE NO PUEDAS TOCAR ESTE BOTON ANTES DE HACER EL
+          #LA PRIMERA TOMA DE LOS MISILES, QUE SOLO SE ACTIVE CUANDO COLOQUE
+          #LOS MISILES Y PASEN QUE SI 1 SEGUNDO
 
 
         #Fila A
