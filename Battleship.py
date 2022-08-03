@@ -14,6 +14,7 @@ from turtle import delay
 from tkinter import *
 from tkinter.messagebox import *
 import threading
+from PIL import ImageTk, Image
 
 Barcos_o_Misiles = True
 #Variable que determina si se estan ponniendo los barcos o los misiles
@@ -80,8 +81,8 @@ class Ventana:
         root.resizable(width=False, height=False)
         root.configure(background='gray')
 
-        # self.fondo = PhotoImage(file="mar.gif")
-        # Label(master,image=self.fondo, width=2500, height=2500).place(x=(-1000), y=(-1000))
+        # self.fondo = PhotoImage(file="camuflaje.gif")
+        # self.labelO = Label(master,image=self.fondo, width=2800, height=2800).place(x=(-1040), y=(-1040))
         #------------------------------------------
 
         self.bienvenida = tkinter.Label(master,text="Bienvenido a Batalla Naval!!")
@@ -204,20 +205,21 @@ class Ventana:
         def muestra_ventana_error_faltas_posiciones():
           if(contador != 10):
             if(Barcos_o_Misiles):
-              showwarning("Error","Tiene que seleccionar 10 posiciones para los BARCOS!")
+              showwarning("Error","Tiene que seleccionar 10 posiciones para los BARCOS solado!")
             else:
-              showwarning("Error","Tiene que seleccionar 10 posiciones para los BARCOS!")
+              showwarning("Error","Tiene que seleccionar 10 posiciones para los MISILES solado!")
 
 
         #COLOCAR QUE ESTE MENSAJE SE MUESTRE AL INICIO, CUANDO AGARRE LOS BARCOS OJO
         def muestra_ventana_introducir():
           if(Barcos_o_Misiles):
-            showinfo("BARCOS","Es momento de que introduzca la posicion de sus BARCOS soldado!!")
+            showinfo("BARCOS","Es momento de que introduzca la posición de sus BARCOS soldado!!")
           else:
-            showinfo("MISILES","Es momento de que introduzca la posicion de sus MISILES soldado!!")
+            showinfo("MISILES","Es momento de que introduzca la posición de sus MISILES soldado!!")
 
 
 #ojo--------------#VERIFICAR PORQUE NO MUESTRA UN MENSAJE CUANDO SE SELECIONA UNA CASILLA YA SELECCIONADA
+#ojo--------------#VAMOS A TRATAR DE COLOCARLE UN FONDO AL PROGRAMA, NO ME CUADRA EN GRIS SOLO
 
         #COLOCAR QUE CADA QUE SE HAGA UN ATAQUE SE MUESTRE EN EL LABEL DE ATAQUE EL NUMERO DEL ATAQUE
         def sum_cant_ataque():
