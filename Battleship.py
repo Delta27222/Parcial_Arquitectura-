@@ -34,6 +34,8 @@ Ganar_o_Perder = False
 #si es True el jugador de pc gano
 #si el false el jugador de pc perdio
 
+contadorPeleas=0
+
 contador=0
 #Contador de Barcos posicionados o misiles preparados 
 #Maximo 10 
@@ -64,7 +66,7 @@ def popUp():
     if Ganar_o_Perder == True:
         messagebox.showinfo('Game Over, Gano',message='Felicidades, su puntaje es: '+ str(score))
     else:
-        messagebox.showinfo('Game Over, Perdio',message='Vuelav a intentarlo, su puntaje es: '+ str(score))
+        messagebox.showinfo('Game Over, Perdio',message='Vuelva a intentarlo, su puntaje es: '+ str(score))
 
 
 
@@ -254,27 +256,99 @@ class Ventana:
         self.Listo.place(width=60,height=25, x=630,y=650)
 
         self.test = ttk.Button(master, text='Score',command= lambda: actualizarScore())
-        self.test.place(x=200, y=600,width=60,height=25)
+        self.test.place(x=550, y=600,width=60,height=25)
 
         self.test2 = ttk.Button(master, text='PopUp',command= lambda: popUp())
-        self.test2.place(x=200, y=640,width=60,height=25)
+        self.test2.place(x=550, y=640,width=60,height=25)
 
+        self.mostrarPosicionLbl = Label(master)
+        self.mostrarPosicionLbl.place(x=160, y=490)
 
+        self.mostrarPosicion1 = Label(master)
+        self.mostrarPosicion1.place(x=160,y=520,width=60,height=25)
+
+        self.mostrarPosicion2 = Label(master)
+        self.mostrarPosicion2.place(x=160,y=550,width=60,height=25)
+
+        self.mostrarPosicion3 = Label(master)
+        self.mostrarPosicion3.place(x=160,y=580,width=60,height=25)
+
+        self.mostrarPosicion4 = Label(master)
+        self.mostrarPosicion4.place(x=160,y=610,width=60,height=25)
+
+        self.mostrarPosicion5 = Label(master)
+        self.mostrarPosicion5.place(x=160,y=640,width=60,height=25)
+
+        self.mostrarPosicion6 = Label(master)
+        self.mostrarPosicion6.place(x=225,y=520,width=60,height=25)
+
+        self.mostrarPosicion7 = Label(master)
+        self.mostrarPosicion7.place(x=225,y=550,width=60,height=25)
+
+        self.mostrarPosicion8 = Label(master)
+        self.mostrarPosicion8.place(x=225,y=580,width=60,height=25)
+
+        self.mostrarPosicion9 = Label(master)
+        self.mostrarPosicion9.place(x=225,y=610,width=60,height=25)
+
+        self.mostrarPosicion10 = Label(master)
+        self.mostrarPosicion10.place(x=225,y=640,width=60,height=25)
 
 
         def listo():
             global contador
+            global contadorPeleas
             global Barcos_o_Misiles
             if contador == 10:
                 self.etiqueta.configure(text="Coloque las posiciones de los 10 misiles") 
                 self.aviso.configure(text="")
                 if Barcos_o_Misiles == True:
+                    posicionesSeleccionadas()
                     prenderBotones()
+                    xd()
+                else:
+                    time.sleep(2) #Da 2 segs luego de dale a listo al momento de los misiles para q el arduino envie el nuevo score En teoria deberia hacer eso xddd
+                    actualizarScore()#pero el programa no puede hacer mas nada mientras esta en sleep
+                    print(Barcos_o_Misiles)#se queda como calculando xd
+                    contadorPeleas +=1
+                    print(contadorPeleas)
+                    if contadorPeleas==3:
+                        actualizarScore()
+                        popUp()
                 Barcos_o_Misiles=False 
                 contador=0
+
             else:
                 self.aviso.configure(text="Debe llenar las 10 Posicionesn antes de avanzar") 
 
+
+        
+        def posicionesSeleccionadas():
+            datos=[]
+            if Barcos_o_Misiles == True:
+                self.mostrarPosicionLbl.config(text='Posiciones de Barcos seleccionadas')
+                for i in range(4):
+                    aux=MatrizBarcos[i]
+                    for j in range(10):
+                        if aux[j]==1:
+                            if i ==0:
+                                datos.append('A'+str(j))
+                            elif i ==1:
+                                datos.append('B'+str(j))
+                            elif i ==2:
+                                datos.append('C'+str(j))
+                            elif i ==3:
+                                datos.append('D'+str(j))
+                self.mostrarPosicion1.config(text=datos[0])
+                self.mostrarPosicion2.config(text=datos[1])
+                self.mostrarPosicion3.config(text=datos[2])
+                self.mostrarPosicion4.config(text=datos[3])
+                self.mostrarPosicion5.config(text=datos[4])
+                self.mostrarPosicion6.config(text=datos[5])
+                self.mostrarPosicion7.config(text=datos[6])
+                self.mostrarPosicion8.config(text=datos[7])
+                self.mostrarPosicion9.config(text=datos[8])
+                self.mostrarPosicion10.config(text=datos[9])
 
 
 
@@ -407,6 +481,13 @@ class Ventana:
                     self.D8.config(state='disable')
                 elif columna == 9:
                     self.D9.config(state='disable')
+
+        def xd():
+            if MatrizBarcos[2] == [1,1,1,1,1,1,1,1,1,1]:
+                self.banner = tkinter.PhotoImage(file="xd.gif")
+                self.lbl_banner.config(image=self.banner)
+                self.etiqueta.configure(text="Congrats, encontraste al chiguire fachero xdd")
+
 
 root = Tk()
 miVentana = Ventana(root)
