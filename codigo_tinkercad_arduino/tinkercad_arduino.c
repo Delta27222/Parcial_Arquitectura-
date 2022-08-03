@@ -265,7 +265,7 @@ void menu2b(){
     mostrarPuntaje();
 
     //Enviamos el puntaje y acertados a python 
-    //enviarPuntaje();ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    //enviarPuntaje(puntuacionJB);++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     //Mostramos la matriz de los barcos del JA
     verMatrizBarcosJA2();
@@ -293,7 +293,7 @@ void menu2b(){
       mostrarPuntaje();
 
       //Enviamos el puntaje y acertados a python 
-      //enviarPuntaje();ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+      //enviarPuntaje(puntuacionJB);++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
       //Mostramos la matriz de los barcos del JA
       verMatrizBarcosJA2();
@@ -319,6 +319,9 @@ void menu2b(){
       
        //Mostramos los resultados del ataque
       mostrarPuntaje();
+
+      //Enviamos el puntaje y acertados a python 
+      //enviarPuntaje(puntuacionJB);++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
       //Mostramos la matriz de los barcos del JA
       verMatrizBarcosJA2();
@@ -346,6 +349,13 @@ void menu2b(){
 
   contadorInicio = 0;
   puntuacionJB = 0;
+}
+
+void enviarPuntaje(int puntuacionJB){
+  String puntajeString = String(puntuacionJB);
+
+  Serial.println(puntajeString);
+  delay(1000); 
 }
 
 
@@ -1589,123 +1599,4 @@ void verMatrizBarcosJA2(){
   delay(1000);
 }
 
-
-
-
-
-
 //FUNCIONAL ----------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
