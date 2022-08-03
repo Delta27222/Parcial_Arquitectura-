@@ -39,21 +39,6 @@ contador=0
 #Maximo 10 
 
 #Funciones
-
-
-def recibirPuntuacion():
-  arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
-
-  dataPacket = arduinoData.readline()
-  dataPacket = str(dataPacket, 'utf-8')
-  print(dataPacket)
-
-  puntaje = int(dataPacket)
-
-  actualizarScore(puntaje)
-
-  arduinoData.close()
-
 '''
 #FUNCIONA EN EL ARDUINO AMICO
 def enviar_posicion_Arduino(fila, columna):
