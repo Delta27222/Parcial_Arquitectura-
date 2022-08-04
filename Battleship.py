@@ -48,6 +48,9 @@ num_Ataque = 0
 
 #Funciones
 
+comienzo=False
+contExtra = 0
+
 #FUNCIONA EN EL ARDUINO AMICO
 def enviar_posicion_Arduino(fila, columna):
 
@@ -339,12 +342,6 @@ class Ventana:
         self.Listo = ttk.Button(master,text='Listo', command= lambda: listo())
         self.Listo.place(width=60,height=25, x=630,y=650)
 
-        self.test = ttk.Button(master, text='Score',command= lambda: actualizarScore())
-        self.test.place(x=550, y=600,width=60,height=25)
-
-        self.test2 = ttk.Button(master, text='PopUp',command= lambda: popUp())
-        self.test2.place(x=550, y=640,width=60,height=25)
-
         self.mostrarPosicionLbl = Label(master, font=("Arial",13), background="gray",foreground='blue')
         self.mostrarPosicionLbl.place(x=160, y=490)
 
@@ -378,11 +375,117 @@ class Ventana:
         self.mostrarPosicion10 = Label(master, font=("Arial",13), background="gray",foreground='blue')
         self.mostrarPosicion10.place(x=225,y=640,width=60,height=25)
 
+        self.test = ttk.Button(master, text='comienzo',command= lambda: cambiarComienzo())
+        self.test.place(x=550, y=600,width=60,height=25)
+
+        self.test2 = ttk.Button(master, text='algo',command= lambda: cambiarAlgo())
+        self.test2.place(x=550, y=640,width=60,height=25)
+
+        def apagarTodosLosBotones():
+            self.A0.config(state='disable')
+            self.A1.config(state='disable')
+            self.A2.config(state='disable')
+            self.A3.config(state='disable')
+            self.A4.config(state='disable')
+            self.A5.config(state='disable')
+            self.A6.config(state='disable')
+            self.A7.config(state='disable')
+            self.A8.config(state='disable')
+            self.A9.config(state='disable')
+            self.B0.config(state='disable')
+            self.B1.config(state='disable')
+            self.B2.config(state='disable')
+            self.B3.config(state='disable')
+            self.B4.config(state='disable')
+            self.B5.config(state='disable')
+            self.B6.config(state='disable')
+            self.B7.config(state='disable')
+            self.B8.config(state='disable')
+            self.B9.config(state='disable')
+            self.C0.config(state='disable')
+            self.C1.config(state='disable')
+            self.C2.config(state='disable')
+            self.C3.config(state='disable')
+            self.C4.config(state='disable')
+            self.C5.config(state='disable')
+            self.C6.config(state='disable')
+            self.C7.config(state='disable')
+            self.C8.config(state='disable')
+            self.C9.config(state='disable')
+            self.D0.config(state='disable')
+            self.D1.config(state='disable')
+            self.D2.config(state='disable')
+            self.D3.config(state='disable')
+            self.D4.config(state='disable')
+            self.D5.config(state='disable')
+            self.D6.config(state='disable')
+            self.D7.config(state='disable')
+            self.D8.config(state='disable')
+            self.D9.config(state='disable')
+
+        def prenderBotones():
+            self.A0.config(state='enable')
+            self.A1.config(state='enable')
+            self.A2.config(state='enable')
+            self.A3.config(state='enable')
+            self.A4.config(state='enable')
+            self.A5.config(state='enable')
+            self.A6.config(state='enable')
+            self.A7.config(state='enable')
+            self.A8.config(state='enable')
+            self.A9.config(state='enable')
+            self.B0.config(state='enable')
+            self.B1.config(state='enable')
+            self.B2.config(state='enable')
+            self.B3.config(state='enable')
+            self.B4.config(state='enable')
+            self.B5.config(state='enable')
+            self.B6.config(state='enable')
+            self.B7.config(state='enable')
+            self.B8.config(state='enable')
+            self.B9.config(state='enable')
+            self.C0.config(state='enable')
+            self.C1.config(state='enable')
+            self.C2.config(state='enable')
+            self.C3.config(state='enable')
+            self.C4.config(state='enable')
+            self.C5.config(state='enable')
+            self.C6.config(state='enable')
+            self.C7.config(state='enable')
+            self.C8.config(state='enable')
+            self.C9.config(state='enable')
+            self.D0.config(state='enable')
+            self.D1.config(state='enable')
+            self.D2.config(state='enable')
+            self.D3.config(state='enable')
+            self.D4.config(state='enable')
+            self.D5.config(state='enable')
+            self.D6.config(state='enable')
+            self.D7.config(state='enable')
+            self.D8.config(state='enable')
+            self.D9.config(state='enable')
+
+        apagarTodosLosBotones()
+
+        def cambiarComienzo():
+            global comienzo
+            comienzo = True
+
 
         def listo():
+            global contExtra
             global contador
             global contadorPeleas
             global Barcos_o_Misiles
+            if comienzo and contExtra == 0:
+                prenderBotones()
+                showinfo('Juego','El juego empezo, preparece soldado')
+                contExtra=1
+                return
+            if comienzo== False:
+                showerror("Aviso",'EL otro jugado aun no esta listo, espere')
+                return
+
             if contador == 10:
                 self.etiqueta.configure(text="Cargando Misiles")
                 self.aviso.configure(text="")
@@ -489,47 +592,7 @@ class Ventana:
             self.D9.config(state='enable')
 
 
-        def apagarTodosLosBotones():
-            self.A0.config(state='disable')
-            self.A1.config(state='disable')
-            self.A2.config(state='disable')
-            self.A3.config(state='disable')
-            self.A4.config(state='disable')
-            self.A5.config(state='disable')
-            self.A6.config(state='disable')
-            self.A7.config(state='disable')
-            self.A8.config(state='disable')
-            self.A9.config(state='disable')
-            self.B0.config(state='disable')
-            self.B1.config(state='disable')
-            self.B2.config(state='disable')
-            self.B3.config(state='disable')
-            self.B4.config(state='disable')
-            self.B5.config(state='disable')
-            self.B6.config(state='disable')
-            self.B7.config(state='disable')
-            self.B8.config(state='disable')
-            self.B9.config(state='disable')
-            self.C0.config(state='disable')
-            self.C1.config(state='disable')
-            self.C2.config(state='disable')
-            self.C3.config(state='disable')
-            self.C4.config(state='disable')
-            self.C5.config(state='disable')
-            self.C6.config(state='disable')
-            self.C7.config(state='disable')
-            self.C8.config(state='disable')
-            self.C9.config(state='disable')
-            self.D0.config(state='disable')
-            self.D1.config(state='disable')
-            self.D2.config(state='disable')
-            self.D3.config(state='disable')
-            self.D4.config(state='disable')
-            self.D5.config(state='disable')
-            self.D6.config(state='disable')
-            self.D7.config(state='disable')
-            self.D8.config(state='disable')
-            self.D9.config(state='disable')
+        
 
 
 
@@ -629,8 +692,3 @@ class Ventana:
 root = Tk()
 miVentana = Ventana(root)
 root.mainloop()
-
-
-
-
-
