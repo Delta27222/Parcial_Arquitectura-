@@ -521,7 +521,6 @@ class Ventana:
                 return
             if (comienzoAngel == 'M' and contExtra>=1 and contExtra<=4):
                 if contador == 10:
-                    prenderBotones()
                     showinfo('Juego','El juego empezo, preparece soldado. Ingrese sus MISILES')
                     self.etiqueta.configure(text="Cargando Misiles")
                     self.aviso.configure(text="")
@@ -530,8 +529,6 @@ class Ventana:
                         prenderBotones()
                         xd()
                     else:
-                        t = threading.Timer(2, actualizarScore) 
-                        t.start() 
                         contadorPeleas +=1
                         actualizarAtaque()
                         if contadorPeleas==3:
@@ -554,6 +551,8 @@ class Ventana:
                     Barcos_o_Misiles=False
                     muestra_ventana_introducir() 
                     contador=0
+                    t = threading.Timer(3, actualizarScore) 
+                    t.start() 
                     if (Barcos_o_Misiles == False):
                         self.Listo.configure(text="Atacar")
                     else:
