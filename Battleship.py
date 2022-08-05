@@ -146,8 +146,10 @@ class Ventana:
                     t.start()
 
         def actualizarScore():
+            global score
             dataPacket = arduinoData.readline()
             dataPacket = str(dataPacket, 'utf-8')
+            dataPacket = dataPacket.strip('\r\n')
             print(dataPacket)
             score = int(dataPacket)
             self.puntaje.config(text=score)
@@ -528,11 +530,6 @@ class Ventana:
                         prenderBotones()
                         xd()
                     else:
-                        dataPacket = arduinoData.readline()
-                        dataPacket = str(dataPacket, 'utf-8')
-                        dataPacket = dataPacket.strip('\r\n')
-                        print(dataPacket)
-                        score = int(dataPacket)
                         t = threading.Timer(2, actualizarScore) 
                         t.start() 
                         contadorPeleas +=1
