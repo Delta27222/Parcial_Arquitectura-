@@ -14,7 +14,7 @@ from turtle import delay
 from tkinter import *
 from tkinter.messagebox import *
 import threading
-from PIL import ImageTk, Image
+#from PIL import ImageTk, Image
 
 Barcos_o_Misiles = True
 #Variable que determina si se estan ponniendo los barcos o los misiles
@@ -51,22 +51,12 @@ num_Ataque = 0
 comienzo=False
 contExtra = 0
 
-#FUNCIONA EN EL ARDUINO AMICO
-def enviar_posicion_Arduino(fila, columna):
+arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
 
-    arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
-    time.sleep(1)
-    i = 1
+comienzoAngel = 0
 
-    if(i == 1):
-        sentChar = bytes(fila, 'utf-8')
-        arduinoData.write(sentChar)             #La envia por el puerto serial
-        i = i + 1
+counter_barco = 1
 
-
-    if (i == 2):
-        sentChar = bytes(columna, 'utf-8')
-        arduinoData.write(sentChar)             
 
 
 def popUp():
@@ -79,28 +69,15 @@ def popUp():
 
 class Ventana:
     def __init__(self, master):
-        #tkinter.messagebox.showinfo(title=None, message="TO START GAME PRESS OKAY & TO EXIT PRESS CROSS UP IN THE WINDOW")  #ESTO LO PODEMOS USAR PARA ALGO
-
         self.master = master
         root.geometry('700x700')
         root.resizable(width=False, height=False)
         root.configure(background='gray')
 
-        # self.fondo = PhotoImage(file="camuflaje.gif")
-        # self.labelO = Label(master,image=self.fondo, width=2800, height=2800).place(x=(-1040), y=(-1040))
-        #------------------------------------------
-
         self.bienvenida = tkinter.Label(master,text="Bienvenido a Batalla Naval!!")
         self.bienvenida.pack(anchor=CENTER)
         self.bienvenida.config(font=("Arial",20), background="gray")
 
-
-        # a=StringVar()
-        # Label(root, text='enter something').pack()
-        # Entry(root, textvariable=a).pack()
-        # Button(root, text='Ok').pack()
-
-        #------------------------------------------
         master.title("Arduino Battleship")
         self.banner = tkinter.PhotoImage(file="Banner.gif")
         self.lbl_banner = tkinter.Label(master, image=self.banner)
@@ -140,7 +117,7 @@ class Ventana:
                         t.start()
 
                         apagarBoton(Fila,Columna)
-                        enviar_posicion_Arduino(Letra, str(Columna))
+                        enviar_posicion_Arduino(Letra, Columna)
                     else:
                         self.aviso.configure(text="Coordenada repetida!")
                         t = threading.Timer(0.7, update_label)   #Ejecuta la funcion de "update_label" despues de 0.7seg
@@ -171,29 +148,27 @@ class Ventana:
                     t.start()
 
         def actualizarScore():
-          arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
-          dataPacket = arduinoData.readline()
-          dataPacket = str(dataPacket, 'utf-8')
-          print(dataPacket)
-          score = int(dataPacket)
-          self.puntaje.config(text=score)
+            dataPacket = arduinoData.readline()
+            dataPacket = str(dataPacket, 'utf-8')
+            print(dataPacket)
+            score = int(dataPacket)
+            self.puntaje.config(text=score)
 
         def update_label():
-          self.aviso.configure(text="")
+            self.aviso.configure(text="")
 
         def actualizarAtaque():
             self.numAtaque.config(text=str(contadorPeleas))
 
-        
 
         #FUNCIONA PARA QUE MUESTRE UN MENSAJE DE ERROR SI AUN NO HA SELECCIONADO LAS 10
         #POSICIONES PARA LOS BARCOS O MISILES
         def muestra_ventana_error_faltas_posiciones():
-          if(contador != 10):
-            if(Barcos_o_Misiles):
-              showwarning("Error","Tiene que seleccionar 10 posiciones para los BARCOS solado!")
-            else:
-              showwarning("Error","Tiene que seleccionar 10 posiciones para los MISILES solado!")
+            if(contador != 10):
+                if(Barcos_o_Misiles):
+                    showwarning("Error","Tiene que seleccionar 10 posiciones para los BARCOS solado!")
+                else:
+                    showwarning("Error","Tiene que seleccionar 10 posiciones para los MISILES solado!")
 
 
         #COLOCAR QUE ESTE MENSAJE SE MUESTRE AL INICIO, CUANDO AGARRE LOS BARCOS OJO
@@ -207,9 +182,41 @@ class Ventana:
             else:
                 showinfo("MISILES","Es momento de que introduzca la posición de sus MISILES soldado!!")
 
+#--------------------------------------------------------------------------------------------------------------------------------
 
-#ojo--------------#VERIFICAR PORQUE NO MUESTRA UN MENSAJE CUANDO SE SELECIONA UNA CASILLA YA SELECCIONADA
-#ojo--------------#VAMOS A TRATAR DE COLOCARLE UN FONDO AL PROGRAMA, NO ME CUADRA EN GRIS SOLO
+        def puedo_enviar():  #RECIBIR DE ARDUINO UNA LETRA PARA FUNCIONAR
+            dataPacket = arduinoData.readline()
+            dataPacket = str(dataPacket, 'utf-8')
+            dataPacket = dataPacket.strip('\r\n')
+            print(dataPacket)
+            data = dataPacket
+            if(data != 'L'):
+                while (data == 'B'):
+                    print('Es B')
+                    return True
+                                                #TENGO QUE GUARDAR ESA M, B, N EN UNA VARIABLE QUE SI GLOBAL
+                while (data == 'M'):
+                    print('Es M')
+                    return True
+                while (data == 'P'):
+                    print('Es P')
+            print('es l')
+            return False
+
+        # def enviar_posicion_Arduino(fila, columna):
+        #     arduinoData.write(b'1')
+        #     print('se esta enviando')
+
+        def enviar_posicion_Arduino(fila,columna):  #letra es la fila
+            filaS = bytes(str(fila), 'utf-8')      # pero me va a dar error de encode.
+            columnaS = bytes(str(columna), 'utf-8')      # Si quiero que sean numeros, le quito str
+            arduinoData.write(filaS)
+            arduinoData.write(columnaS)
+            # data.write(pos_colmuna)
+            # data.write(pos_fila)
+            print(f'Fila ({filaS})----Columna({columnaS})')
+
+#----------------------------------------------------------------------------------------------------------------------------------
 
         #Fila A
 
@@ -339,7 +346,7 @@ class Ventana:
         self.D9 = ttk.Button(master, text="D9",command=lambda: GuaradrPosicion(3,9,'D'))
         self.D9.place(width=60,height=25, x=615,y=460)
 
-        self.Listo = ttk.Button(master,text='Listo', command= lambda: listo())
+        self.Listo = ttk.Button(master,text='Listo', command= lambda: listoMio())    #SI NO A TOCADO AUN LAS 10 CASILLAS QUE SE BLOQUEE
         self.Listo.place(width=60,height=25, x=630,y=650)
 
         self.mostrarPosicionLbl = Label(master, font=("Arial",13), background="gray",foreground='blue')
@@ -470,9 +477,67 @@ class Ventana:
         def cambiarComienzo():
             global comienzo
             comienzo = True
+            # quiero teneer una variable que sea global, que se guarde como B, M, NS
+            # si es B puede empezar a enviar barcos
+            # si es M puede empezar a enviar misiles
+            # si es N NO PUEDE ENVIAR
 
+        def puedo_enviar2():  #RECIBIR DE ARDUINO UNA LETRA PARA FUNCIONAR
+            dataPacket = arduinoData.readline()
+            dataPacket = str(dataPacket, 'utf-8')
+            dataPacket = dataPacket.strip('\r\n')
+            print(dataPacket)
+            data = dataPacket
+            if(data == 'B'):
+                global counter_barco
+                counter_barco = counter_barco + 1
+                print('Es B')
+                return 'B'
+            if(data == 'M'):
+                print('Es M')
+                return 'M'
+            if(data == 'P'):
+                print('Es P')
+                return 'P'
+            if(data == 'L'):
+                print('Es L')
+                return 'L'
+
+
+        def listoMio():
+            global comienzoAngel
+            comienzoAngel = puedo_enviar2()
+            global contExtra
+            global contador
+            global contadorPeleas
+            global Barcos_o_Misiles
+            if (comienzoAngel == 'B'):
+                prenderBotones()
+                showinfo('Juego','El juego empezo, preparece soldado. Ingrese sus BARCOS')
+                return
+            if (comienzoAngel == 'M' and contador == 10):
+                contador = 0
+                prenderBotones()
+                showinfo('Juego','El juego empezo, preparece soldado. Ingrese sus MISILES')
+                self.etiqueta.configure(text="Cargando Misiles")
+                self.aviso.configure(text="")
+                posicionesSeleccionadas()
+                prenderBotones()
+                return
+            if (comienzoAngel == 'P'):
+                showinfo('Juego','Actualizando el puntaje')
+                return
+            if (comienzoAngel == 'N'):
+                showerror("Aviso",'EL otro jugado aun no esta listo, espere')
+                return
+            if (comienzoAngel == 'L'):
+                apagarTodosLosBotones()
+                showinfo('Juego','Ataque completado')
+                return
 
         def listo():
+            global comienzo
+            comienzo = puedo_enviar()   ##puede ser esta variable comienzo??  falta guardar los valores 
             global contExtra
             global contador
             global contadorPeleas
@@ -510,16 +575,13 @@ class Ventana:
                 muestra_ventana_introducir() 
                 contador=0
                 if (Barcos_o_Misiles == False):
-                  self.Listo.configure(text="Atacar")
+                    self.Listo.configure(text="Atacar")
                 else:
-                  self.Listo.configure(text="Listo")
+                    self.Listo.configure(text="Listo")
 
             else:
                 muestra_ventana_error_faltas_posiciones()
 
-       
-
-        
         def posicionesSeleccionadas():
             datos=[]
             if Barcos_o_Misiles == True:
@@ -590,10 +652,6 @@ class Ventana:
             self.D7.config(state='enable')
             self.D8.config(state='enable')
             self.D9.config(state='enable')
-
-
-        
-
 
 
         def apagarBoton(fila, columna):
