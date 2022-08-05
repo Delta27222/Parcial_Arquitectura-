@@ -32,23 +32,21 @@ MatrizMisiles= [[0,0,0,0,0,0,0,0,0,0],
 
 aux=[]
 
-score = 0
+score = 0 #puntaje del player de pc
 
 Ganar_o_Perder = False
 #si es True el jugador de pc gano
 #si el false el jugador de pc perdio
 
-contadorPeleas=0
+contadorPeleas=0 #cantidad de ataques con misiles realizados
 
-contador=0
+contador=0 #contador de posiciones colocadas y guardadas en las matrices
 
 num_Ataque = 0
 #Contador de Barcos posicionados o misiles preparados 
 #Maximo 10 
 
-#Funciones
 
-comienzo=False
 contExtra = 0
 
 arduinoData = serial.Serial('COM3',baudrate='9600', bytesize=8)
@@ -505,36 +503,73 @@ class Ventana:
 
 
         def listoMio():
+            global Ganar_o_Perder
             global comienzoAngel
+            global score
             comienzoAngel = puedo_enviar2()
             global contExtra
             global contador
             global contadorPeleas
             global Barcos_o_Misiles
-            if (comienzoAngel == 'B'):
+            comparacion = 0
+            if comienzoAngel == 'B' and contExtra==0:
                 prenderBotones()
                 showinfo('Juego','El juego empezo, preparece soldado. Ingrese sus BARCOS')
+                contExtra+=1
                 return
-            if (comienzoAngel == 'M' and contador == 10):
-                contador = 0
-                prenderBotones()
-                showinfo('Juego','El juego empezo, preparece soldado. Ingrese sus MISILES')
-                self.etiqueta.configure(text="Cargando Misiles")
-                self.aviso.configure(text="")
-                posicionesSeleccionadas()
-                prenderBotones()
-                return
-            if (comienzoAngel == 'P'):
-                showinfo('Juego','Actualizando el puntaje')
+            if (comienzoAngel == 'M' and contExtra>=1 and contExtra<=4):
+                if contador == 10:
+                    prenderBotones()
+                    showinfo('Juego','El juego empezo, preparece soldado. Ingrese sus MISILES')
+                    self.etiqueta.configure(text="Cargando Misiles")
+                    self.aviso.configure(text="")
+                    if Barcos_o_Misiles == True:
+                        posicionesSeleccionadas()
+                        prenderBotones()
+                        xd()
+                    else:
+                        dataPacket = arduinoData.readline()
+                        dataPacket = str(dataPacket, 'utf-8')
+                        dataPacket = dataPacket.strip('\r\n')
+                        print(dataPacket)
+                        score = int(dataPacket)
+                        t = threading.Timer(2, actualizarScore) 
+                        t.start() 
+                        contadorPeleas +=1
+                        actualizarAtaque()
+                        if contadorPeleas==3:
+                            dataPacket = arduinoData.readline()
+                            dataPacket = str(dataPacket, 'utf-8')
+                            dataPacket = dataPacket.strip('\r\n')
+                            print(dataPacket)
+                            comparacion = int(dataPacket)
+                            if comparacion==0:
+                                Ganar_o_Perder=False
+                            else:
+                                Ganar_o_Perder=True
+                            apagarTodosLosBotones()
+                            u = threading.Timer(2, actualizarScore) 
+                            u.start() 
+                            v = threading.Timer(2, popUp) 
+                            v.start() 
+                            w = threading.Timer(20, root.destroy)
+                            w.start()
+                    Barcos_o_Misiles=False
+                    muestra_ventana_introducir() 
+                    contador=0
+                    if (Barcos_o_Misiles == False):
+                        self.Listo.configure(text="Atacar")
+                    else:
+                        self.Listo.configure(text="Listo")
+                    contExtra +=1
+                else:
+                    muestra_ventana_error_faltas_posiciones()
                 return
             if (comienzoAngel == 'N'):
                 showerror("Aviso",'EL otro jugado aun no esta listo, espere')
                 return
-            if (comienzoAngel == 'L'):
-                apagarTodosLosBotones()
-                showinfo('Juego','Ataque completado')
-                return
 
+        '''
         def listo():
             global comienzo
             comienzo = puedo_enviar()   ##puede ser esta variable comienzo??  falta guardar los valores 
@@ -581,6 +616,10 @@ class Ventana:
 
             else:
                 muestra_ventana_error_faltas_posiciones()
+        '''
+        #python es bien gei ngl salu2
+
+    
 
         def posicionesSeleccionadas():
             datos=[]
