@@ -32,6 +32,8 @@ MatrizMisiles= [[0,0,0,0,0,0,0,0,0,0],
 
 aux=[]
 
+fin ='S'
+
 score = 0 #puntaje del player de pc
 
 Ganar_o_Perder = False
@@ -382,11 +384,11 @@ class Ventana:
         self.mostrarPosicion10 = Label(master, font=("Arial",13), background="gray",foreground='blue')
         self.mostrarPosicion10.place(x=225,y=640,width=60,height=25)
 
-        self.test = ttk.Button(master, text='comienzo',command= lambda: cambiarComienzo())
-        self.test.place(x=550, y=600,width=60,height=25)
+        #self.test = ttk.Button(master, text='comienzo',command= lambda: cambiarComienzo())
+        #self.test.place(x=550, y=600,width=60,height=25)
 
-        self.test2 = ttk.Button(master, text='algo',command= lambda: cambiarAlgo())
-        self.test2.place(x=550, y=640,width=60,height=25)
+       # self.test2 = ttk.Button(master, text='algo',command= lambda: cambiarAlgo())
+        #self.test2.place(x=550, y=640,width=60,height=25)
 
         def apagarTodosLosBotones():
             self.A0.config(state='disable')
@@ -506,6 +508,7 @@ class Ventana:
 
         def listoMio():
             global Ganar_o_Perder
+            global fin
             global comienzoAngel
             global score
             comienzoAngel = puedo_enviar2()
@@ -526,33 +529,12 @@ class Ventana:
                     self.aviso.configure(text="")
                     if Barcos_o_Misiles == True:
                         posicionesSeleccionadas()
-                        prenderBotones()
+                        prenderBotones()                                #VAMOS A COLOCAR ESTO COMO EL PRIMER IF, ALGO SIMPLE
+                                                                        #NO ESA VAINA DE ANDAR PIDIENDO EL EL PUNTAJE EN LA MITAD
                         xd()
-                    else:
-                        contadorPeleas +=1
-                        actualizarAtaque()
-                        if contadorPeleas==3:
-                            dataPacket = arduinoData.readline()
-                            dataPacket = str(dataPacket, 'utf-8')
-                            dataPacket = dataPacket.strip('\r\n')
-                            print(dataPacket)
-                            comparacion = int(dataPacket)
-                            if comparacion==0:
-                                Ganar_o_Perder=False
-                            else:
-                                Ganar_o_Perder=True
-                            apagarTodosLosBotones()
-                            u = threading.Timer(2, actualizarScore) 
-                            u.start() 
-                            v = threading.Timer(2, popUp) 
-                            v.start() 
-                            w = threading.Timer(20, root.destroy)
-                            w.start()
                     Barcos_o_Misiles=False
-                    muestra_ventana_introducir() 
+                    muestra_ventana_introducir()
                     contador=0
-                    t = threading.Timer(3, actualizarScore) 
-                    t.start() 
                     if (Barcos_o_Misiles == False):
                         self.Listo.configure(text="Atacar")
                     else:
@@ -564,6 +546,54 @@ class Ventana:
             if (comienzoAngel == 'N'):
                 showerror("Aviso",'EL otro jugado aun no esta listo, espere')
                 return
+            if comienzoAngel == 'P':
+                contadorPeleas +=1
+                actualizarAtaque()
+                t = threading.Timer(2, actualizarScore)       #ESTE TAMBIEN ESTA DANDO PROBLEMAS, EL ESCORE NO SE ENVIA
+                t.start()
+                if contadorPeleas==3:
+                    dataPacket = arduinoData.readline()
+                    dataPacket = str(dataPacket, 'utf-8')
+                    dataPacket = dataPacket.strip('\r\n')
+                    print(dataPacket)
+                    comparacion = int(dataPacket)
+                    if comparacion==0:
+                        Ganar_o_Perder=False
+                    else:
+                        Ganar_o_Perder=True
+                    apagarTodosLosBotones()
+                    v = threading.Timer(5, popUp)
+                    v.start()
+                    w = threading.Timer(30, root.destroy)
+                    w.start()
+            '''dataPacket = arduinoData.readline()
+            dataPacket = str(dataPacket, 'utf-8')
+            dataPacket = dataPacket.strip('\r\n')
+            print(dataPacket)
+            fin = str(dataPacket)
+            if fin == 'G':
+                Ganar_o_Perder = True
+                apagarTodosLosBotones()
+                v = threading.Timer(2, popUp)
+                v.start()
+                w = threading.Timer(20, root.destroy)
+                w.start()
+                return
+            elif fin == 'Q':
+                Ganar_o_Perder=False
+                apagarTodosLosBotones()
+                v = threading.Timer(2, popUp)
+                v.start()
+                w = threading.Timer(20, root.destroy)
+                w.start()
+                return
+            elif fin =='E':
+                messagebox.showinfo('Game Over, Hubo un empate',message='Juegue de nuevo, su puntaje es: '+ str(score))
+                w = threading.Timer(20, root.destroy)
+                w.start()
+                return
+            '''
+
 
         '''
         def listo():
